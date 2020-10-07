@@ -7,13 +7,13 @@
     <title>Mixins e ajax</title>
 </head>
 <body>
-    <div id="app" style="margin: 0; padding: 0; background-color: #333333;">
-        
-        <div class="container" style="margin: 0; padding: 30px; color: #ffff99; width: 100rem; height: 100vh;">
-        <h1>{{ titulo }}</h1>
+    <div id="app" style="margin: 0px; padding: 75px; background-color: #333333;">
+        <a href="index.html" style="margin-left: -30px;">Home</a>
+        <div class="container" style="margin: 0; padding: 0; color: #ffff99; width: 100rem; height: 100vh; display: flex; align-items: center; flex-direction: column;">
+        <h1 style="margin: 200px 0 20px 0;">{{ titulo }}</h1>
         <ul>
-          <li style="list-style: none;"><router-link to="/transformers">Transformers</router-link></li>
-          <li style="list-style: none;"><router-link to="/game-of-thrones">Game of thrones</router-link></li>
+          <li style="list-style: none;"><router-link :to="{name: 'Transformers'}">Transformers</router-link></li>
+          <li style="list-style: none;"><router-link :to="{name: 'GameOfThrones'}">Game of thrones</router-link></li>
 
           <router-view></router-view>
           
@@ -73,9 +73,10 @@
       });
 
       var router = new VueRouter({
+          mode: 'history',
           routes: [
-              {path: '/transformers', component: Transformers},
-              {path: '/game-of-thrones', component: GameOfThrones},
+              {path: '/transformers', name:'Transformers', component: Transformers},
+              {path: '/game-of-thrones',name:'GameOfThrones',component: GameOfThrones},
           ]
       })
       
