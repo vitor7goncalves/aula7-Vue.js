@@ -7,9 +7,11 @@
     <title>Mixins e ajax</title>
 </head>
 <body>
-    <div id="app" style="margin: 0px; padding: 75px; background-color: #333333;">
-        <a href="index.html" style="margin-left: -30px;">Home</a>
-        <div class="container" style="margin: 0; padding: 0; color: #ffff99; width: 100rem; height: 100vh; display: flex; align-items: center; flex-direction: column;">
+    <div style="width: 1349px; margin: 0; background-color: black; opacity: 0.7;">
+       <a href="/index.html" style="margin-left: 30px;"><img src="/Logo StormWizard.png" alt="" style="width: 200px;";></a>
+    </div>
+    <div id="app" style="margin: 0px; padding: 75px; background-color: #ffffff;">
+        <div class="container" style="margin: 0; padding: 0; color: #5e5e06; width: 100rem; height: 100vh; display: flex; align-items: center; flex-direction: column;">
         <h1 style="margin: 200px 0 20px 0;">{{ titulo }}</h1>
         <ul>
           <li style="list-style: none;"><router-link :to="{name: 'Transformers'}">Transformers</router-link></li>
@@ -22,11 +24,20 @@
     </div>
 
     <template id="transformers">
+        <div class="row">
+            <div class="col">
+                <h4>Transformers</h4>
+                <ul>
+                   <li v-for="item in transformers"><router-link :to="{ name: 'transformersContent', params: { name: item.slug}}">{{ item.name }}</router-link></li>
+                </ul>
+            </div>
+
+            <div class="col">
+                <router-view></router-view>
+            </div>
+        </div>
        <div>
-           <h4>Transformers</h4>
-           <ul>
-              <li v-for="item in transformers">{{ item.name }}</li>
-           </ul>
+           
        </div>
     </template>
 
@@ -38,7 +49,12 @@
             </ul>
         </div>
     </template>
-
+    <template id="transfContent">
+        <div>
+           <h3>Conteúdo Transformers</h3>   
+           {{$route.params.name}}     
+        </div>
+    </template>
 
     <script src="http://unpkg.com/vue"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
@@ -51,9 +67,9 @@
         data(){
             return{
                 transformers: [
-                     {name: 'Optimus Prime'},
-                     {name: 'Bumblebee'},
-                     {name: 'Ironhide'},
+                     {name: 'Optimus Prime', slug: 'Optimus-Prime'},
+                     {name: 'Bumblebee', slug: 'Bumblebee'},
+                     {name: 'Ironhide', slug: 'Ironhide'},
                 ],
             }
         },
@@ -69,13 +85,21 @@
                      {name: 'Tyron'},
                 ],
             }
-        },
+        }
       });
+
+      var TransformersContent = Vue.component ('transformers-content', {
+          template: '#transfContent',
+      })
 
       var router = new VueRouter({
           mode: 'history',
           routes: [
-              {path: '/transformers', name:'Transformers', component: Transformers},
+              {path: '/transformers', name:'Transformers', component: Transformers,
+                 children: [
+                     { path:':name', name:'transformersContent' , component: TransformersContent}, 
+                 ]
+              },
               {path: '/game-of-thrones',name:'GameOfThrones',component: GameOfThrones},
           ]
       })
@@ -84,6 +108,10 @@
         var app = new Vue({
         el: "#app",
         router,
+
+        // created() {
+        //     this.$router.push({ name:'transformersContent', params:{name: 'Bumblebee'} });
+        // },  --------------------------- rota automatica ------------------------------------
 
         data:{
             titulo: 'Storm Wizard',
