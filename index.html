@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <title>Mixins e ajax</title>
+
+      <style>
+          .dark{
+              color: #ffffff;
+              background-color: #333333;
+          }
+          .light{
+              color: #408080;
+              background-color: #cccccc;
+          }
+      </style>
+
 </head>
 <body>
     <div style="width: 1349px; margin: 0; background-color: black; opacity: 0.7;">
@@ -25,6 +37,9 @@
 
     <template id="transformers">
         <div class="row">
+            <div :class="['col', sidebar]">
+                Sidebar
+            </div>
             <div class="col">
                 <h4>Transformers</h4>
                 <ul>
@@ -64,6 +79,9 @@
     <script>
     var Transformers = Vue.component('transformers', { 
         template: '#transformers',
+        props: {
+            sidebar: String,
+        },
         data(){
             return{
                 transformers: [
@@ -96,15 +114,17 @@
           mode: 'history',
           routes: [
               {path: '/transformers', name:'Transformers', component: Transformers,
+                props: { sidebar: "light" },
                  children: [
                      { path:':name', name:'transformersContent' , component: TransformersContent}, 
                  ]
               },
               {path: '/game-of-thrones',name:'GameOfThrones',component: GameOfThrones},
-          ]
+          ],
+         
       })
       
-
+     
         var app = new Vue({
         el: "#app",
         router,
@@ -117,6 +137,7 @@
             titulo: 'Storm Wizard',
            
         },
+       
 
     });
     </script>
